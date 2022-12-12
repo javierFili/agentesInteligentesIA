@@ -16,21 +16,23 @@ if __name__ == '__main__':
     caj = Cajero()
     res = Responsable()
 
-    print('---- Iteracion 1 ----')
+    print('---- Iteracion inicial ----')
     print(mapa.matriz)
     print('\n','Estudiante:'    , est.getEstado(),'\n'
             ,'Director:'    , dir.getEstado(),'\n'
             ,'Cajero:'      , caj.getEstado(),'\n'
             ,'Responsable:' , res.getEstado())
 
-    g = 0
+    g = 1
 
     while est.getMaterias() > 0:
-        print('---- Iteracion ',g,' ----')
-        print(mapa.matriz)
-        print('\n','Estudiante:'    , est.getEstado(),'\n'
-                ,'Director:'    , dir.getEstado(),'\n'
-                ,'Cajero:'      , caj.getEstado(),'\n'
-                ,'Responsable:' , res.getEstado())
-
-        g = 0    
+        if est.pagar_a(caj):
+                est.setEstado(2)
+                caj.setEstado(2)
+                print('---- Iteracion ',g,' ----')
+                print(mapa.matriz)
+                print('\n','Estudiante:'    , est.getEstado(),'\n'
+                        ,'Director:'    , dir.getEstado(),'\n'
+                        ,'Cajero:'      , caj.getEstado(),'\n'
+                        ,'Responsable:' , res.getEstado())
+        est.resMaterias()
