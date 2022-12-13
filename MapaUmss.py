@@ -13,7 +13,7 @@ class MapaUmss:
     def setPosEstudiante(self, fila, colum):
         self.matriz[colum][fila] = 1
 
-    def setPosOficinas(self, fila, colum):
+    def setPosOficinasMatriculas(self, fila, colum):
         self.matriz[colum][fila] = 2
         return "oficina ingresada"
 

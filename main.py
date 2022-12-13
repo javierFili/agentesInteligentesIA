@@ -7,7 +7,7 @@ from agentes.Responsable import Responsable
 if __name__ == '__main__':
   mapa = MapaUmss()
   mapa.setPosEstudiante(0, 4)
-  mapa.setPosOficinas(4, 0)
+  mapa.setPosOficinasMatriculas(4, 0)
   mapa.setPosCajero(8, 4)
   mapa.setPosResponsable(4, 8)
 

@@ -53,35 +53,13 @@ class BuzzleApp(kivy.app.App):
             self.rect = kivy.graphics.Rectangle(size=self.all_widgets[x, y].size,
                                                 pos=self.all_widgets[x, y].pos)
 
-  def correrMatriz(self, *args):
-    print('---- Iteracion inicial ----')
-    print(self.mapa.matriz)
-    print('\n', 'Estudiante:', self.est.getEstado(), '\n'
-          , 'Director:', self.dir.getEstado(), '\n'
-          , 'Cajero:', self.caj.getEstado(), '\n'
-          , 'Responsable:', self.res.getEstado())
-
-    g = 1
-
-    while self.est.getMaterias() > 0:
-      if self.est.pagar_a(self.caj):
-        self.est.setEstado(2)
-        self.caj.setEstado(2)
-        print('---- Iteracion ', g, ' ----')
-        print(self.mapa.matriz)
-        print('\n', 'Estudiante:', self.est.getEstado(), '\n'
-              , 'Director:', self.dir.getEstado(), '\n'
-              , 'Cajero:', self.caj.getEstado(), '\n'
-              , 'Responsable:', self.res.getEstado())
-      self.est.resMaterias()
-
   def build(self):
     self.mapa = MapaUmss()
     self.mapa.setPosEstudiante(0, 4)
-    self.mapa.setPosOficinas(4, 0)
+    self.mapa.setPosOficinasMatriculas(4, 0)
     self.mapa.setPosCajero(8, 4)
     self.mapa.setPosResponsable(4, 8)
-    self.est = Estudiante()
+    self.est = Estudiante("Ing.Informatica")
     self.dir = Director()
     self.caj = Cajero()
     self.res = Responsable()
@@ -112,6 +90,28 @@ class BuzzleApp(kivy.app.App):
     boxLayout_buttons.add_widget(ponerPosicionesDatos)
 
     return boxLayout
+
+  def correrMatriz(self, *args):
+    print('---- Iteracion inicial ----')
+    print(self.mapa.matriz)
+    print('\n', 'Estudiante:', self.est.getEstado(), '\n'
+          , 'Director:', self.dir.getEstado(), '\n'
+          , 'Cajero:', self.caj.getEstado(), '\n'
+          , 'Responsable:', self.res.getEstado())
+
+    g = 1
+
+    while self.est.getMaterias() > 0:
+      if self.est.pagar_a(self.caj):
+        self.est.setEstado(2)
+        self.caj.setEstado(2)
+        print('---- Iteracion ', g, ' ----')
+        print(self.mapa.matriz)
+        print('\n', 'Estudiante:', self.est.getEstado(), '\n'
+              , 'Director:', self.dir.getEstado(), '\n'
+              , 'Cajero:', self.caj.getEstado(), '\n'
+              , 'Responsable:', self.res.getEstado())
+      self.est.resMaterias()
 
 
 if __name__ == '__main__':
