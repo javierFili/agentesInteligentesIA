@@ -1,15 +1,14 @@
 class Responsable:
-    dinero = 10
-    tiempo = 12
+  def __init__(self):
+    self.listasMaterias = []
+    self.materiasHabilitadas = []
+    self.estudianteHabilitados = []
 
-    estado = 'inactivo'
+  def registrarCodigosMaterias(self, lista):
+    self.listasMaterias.append(lista)
 
-    def getEstado(self):
-        return  self.estado
-
-    def __init__(self):
-        self.dinero = 12
-        self.tiempo = 122
-
-    def aunTieneDinero(self):
-        return self.dinero
+  def habilitarMaterias(self, minimo, maximo):
+    for x in self.listasMaterias:
+      queEs = x
+      self.materiasHabilitadas.append(x[0][1])
+      self.estudianteHabilitados.append(x[0][0])

@@ -2,7 +2,7 @@ class Estudiante:
   def __init__(self, carrera):
     self.dinero = 20
     self.tiempoEmpleado = 0
-    self.materias = 6
+    self.materias = ["calculo", "algebra", "Ingles", "Programacion1"]
     self.estado = 'inactivo'
     self.carrera = carrera
     self.codEstudiante = 12
@@ -10,12 +10,6 @@ class Estudiante:
 
   def getCarrera(self):
     return self.carrera
-
-  def getMaterias(self):
-    return self.materias
-
-  def resMaterias(self):
-    self.materias = self.materias - 1
 
   def getEstado(self):
     return self.estado
@@ -42,14 +36,13 @@ class Estudiante:
       res = True
     return res
 
-  def aunTieneDinero(self):
-    return self.dinero
-
-  def avanzarSigOf(self):
-    return "avanzo"
-
+  def irCasa(self):
+    self.estado = "inactivo "
   def mostrarMatricula(self):
-    return self.codEstudiante, self.carrera, self.materias
+    return self.codMatricula
+
+  def darListaMaterias(self):
+    return self.codEstudiante, self.materias
 
   def setTiempoEmpleado(self, tiempo):
     self.tiempoEmpleado = self.tiempoEmpleado + tiempo

@@ -119,12 +119,24 @@ class BuzzleApp(kivy.app.App):
       print("Estudiante se dirige a esa oficina")
       print("Estudiante muestra la matricula, al director, el director la registra, da el visto bueno")
       registro = self.dir.registrarMatricula(self.est.mostrarMatricula())
-      print("Estudiante entrega la lista de materias que desea inscribirse")
-      print("Director registra estas materias y las guarda en una lista")
-
-      print("Estudiante se va a casa")
-
-      print("Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ")
+      if (registro):
+        print("Estudiante entrega la lista de materias que desea inscribirse")
+        print("Director registra estas materias y las guarda en una lista")
+        self.dir.registrarMaterias(self.est.darListaMaterias())
+        print("Estudiante se va a casa")
+        self.est.irCasa()
+        # cuando termina o almenos tiene un estudiante
+        print("Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ")
+        print("Director tiene la siguiente lista de codigos y materias:", self.dir.listaMateriasCod)
+        ubicacionOfResponsable = self.buscarOficina(4)
+        print("La oficina del Responsable esta en ", ubicacionOfResponsable[0], ubicacionOfResponsable[1])
+        self.res.registrarCodigosMaterias(self.dir.entregarListaCodigosMaterias())
+        print("DIrecot entrega lista y se marcha")
+        self.dir.irCasa()
+        print("Responsable evalua las materias y las habilita segun criterio impuesto")
+        self.res.habilitarMaterias(1, 0)
+        print("Las materias habilitadas son las siguientes:", self.res.materiasHabilitadas)
+        print("Los estudiantes habilitados segun su codigo  son los siguientes:", self.res.estudianteHabilitados)
 
 
 if __name__ == '__main__':
