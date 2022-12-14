@@ -103,58 +103,77 @@ class BuzzleApp(kivy.app.App):
   # la estudiante=1, caja=2, director=3, responsable=4
   def correrMatriz(self, *args):
     estudiantes = self.crearEstudiantesDatosAleatorios()
+    print("[---- Inicio ----]")
     for estudiante in estudiantes:
       self.est = estudiante
       self.est.setTiempoEmpleado(self.caj.tiempoTotal)
       ubicacionOfCajero = self.buscarOficina(2)
-      print("Estudiante se dirige a la oficina de Cajero, ubicada en :", ubicacionOfCajero[0], ubicacionOfCajero[1])
+
+# Interaccion estudiante - cajero
+      print("\n--- El estudiante",self.est.codEstudiante,"inicia transaccion con el cajero ---"
+      ,"\n- Estudiante se dirige a la oficina de Cajero, ubicada en :", ubicacionOfCajero[0], ubicacionOfCajero[1])
       cobrarMatricula = self.caj.cobrarMatricula(self.est.codEstudiante)
       comprarMatricula = self.est.pagarMatricula(self.caj)
       self.caj.setTiempoTotal(cobrarMatricula[1])
+      
       if (cobrarMatricula[0] and comprarMatricula and self.est.estado):
-        print(self.est.codEstudiante, " compro matricula")
+        
+        print("- El estudiante",self.est.codEstudiante,"compro matricula")
         self.est.setTiempoEmpleado(cobrarMatricula[1])
         self.caj.darMatricula(self.est)
 
         print("Tiempo empleado de est:", self.est.tiempoEmpleado, "Y codMatricula:", self.est.codMatricula,
-              "\nEstudiante debe avanzar ala siguiente oficina: Director ")
-
+              "\n- Estudiante debe avanzar ala siguiente oficina: Director ")
         ubicacionOfDirector = self.buscarOficina(3)
 
-        print("La oficina del director esta en ", ubicacionOfDirector[0], ubicacionOfDirector[1],
-              "\nEstudiante se dirige a esa oficina",
-              "\nEstudiante muestra la matricula, al director, el director la registra, da el visto bueno")
+# Interaccion estudiante - director
+        print("\n--- El estudiante",self.est.codEstudiante,"inicia transaccion con el Director ---",
+              "\n- La oficina del director esta en ", ubicacionOfDirector[0], ubicacionOfDirector[1],
+              "\n- Estudiante se dirige a esa oficina",
+              "\n- Estudiante muestra la matricula al director",
+              "\n- Director la registra y valida la matricula")
 
         registro = self.dir.registrarMatricula(self.est.mostrarMatricula())
         self.est.setTiempoEmpleado(registro[1])  # se agrega mas tiempo al estudiante
         if (registro and self.est.estado):
-          print("Estudiante entrega la lista de materias que desea inscribirse",
-                "\nDirector registra estas materias y las guarda en una lista")
+          print("- Estudiante entrega la lista de materias que desea inscribirse",
+                "\n- Director registra estas materias y las guarda en una lista")
 
           registroMat = self.dir.registrarMaterias(self.est.darListaMaterias())
           self.est.setTiempoEmpleado(registroMat[1])
 
-          print("--->", self.est.codEstudiante, "Estudiante se va a casa", "\n Estudiante invirtio un tiempo de ",
-                self.est.tiempoEmpleado,
-                "\n\n----###--")
+          print("\n--- El estudiante",self.est.codEstudiante,"se va a casa ---"
+                ,"\nEstudiante invirtio un tiempo de "
+                ,self.est.tiempoEmpleado
+                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
 
           self.est.irCasa()
         else:
-          print("--->", self.est.codEstudiante, "  no tenia tiempo disponible", "\n\n----###--")
+          print("x--- El estudiante", self.est.codEstudiante, "no tiene tiempo disponible ---x"
+                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
       else:
-        print("--->", self.est.codEstudiante, " no le alzanzo el dinero o no tenia tiempo disponible", "\n\n----###--")
-    print("Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ",
-          "\nDirector tiene la siguiente lista de codigos y materias:", self.dir.listaMateriasCod)
+        print("X El estudiante", self.est.codEstudiante, "no tiene el dinero suficiente o tampoco cuenta con tiempo disponible"
+                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
+
+# Interaccion director - responsable
+    print("\n--- El Director inicia transaccion con el Responsable ---",
+          "\n- Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ",
+          "\n- Director tiene la siguiente lista de codigos y materias:")
+    for materia in self.dir.listaMateriasCod:
+      print(materia)
     ubicacionOfResponsable = self.buscarOficina(4)
-    print("La oficina del Responsable esta en ", ubicacionOfResponsable[0], ubicacionOfResponsable[1])
+    print("- La oficina del Responsable esta en ", ubicacionOfResponsable[0], ubicacionOfResponsable[1])
     self.res.registrarCodigosMaterias(self.dir.entregarListaCodigosMaterias())
-    print("Director entrega lista y se marcha")
+    print("- Director entrega lista y se marcha")
     self.dir.irCasa()
-    print("Responsable evalua las materias y las habilita segun criterio impuesto")
-    # se habilita materias con un minimo de 3 inscritos
+
+# Actividad solo del responsable
+    print("\n--- El Responsable inicia el proceso de habilitacion ---",
+          "\n- Responsable evalua las materias y las habilita segun criterio impuesto")
+          # se habilita materias con un minimo de 3 inscritos
     self.res.habilitarMaterias(2)
-    print("Las materias habilitadas son las siguientes:", self.res.materiasHabilitadas,
-          "\nLos estudiantes habilitados segun su codigo  son los siguientes:", self.res.estudianteHabilitados)
+    print("- Las materias habilitadas son las siguientes:","\n",self.res.materiasHabilitadas,
+          "\n- Los estudiantes habilitados segun su codigo son los siguientes:", self.res.estudianteHabilitados)
 
   def crearEstudiantesDatosAleatorios(self):
     estudiantes = []
