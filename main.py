@@ -98,10 +98,6 @@ class BuzzleApp(kivy.app.App):
 
   def buscarOficina(self, cod):
     valor = np.where(self.mapa.matriz == cod)
-    x = valor[0]
-    y = valor[1]
-    print(self.mapa.matriz[x, y], x, y)
-    # es la posicion x y de la posicion de la oficina
     return valor
 
   # la estudiante=1, caja=2, director=3, responsable=4
@@ -150,7 +146,7 @@ class BuzzleApp(kivy.app.App):
     ubicacionOfResponsable = self.buscarOficina(4)
     print("La oficina del Responsable esta en ", ubicacionOfResponsable[0], ubicacionOfResponsable[1])
     self.res.registrarCodigosMaterias(self.dir.entregarListaCodigosMaterias())
-    print("DIrecot entrega lista y se marcha")
+    print("Director entrega lista y se marcha")
     self.dir.irCasa()
     print("Responsable evalua las materias y las habilita segun criterio impuesto")
     # se habilita materias con un minimo de 3 inscritos
