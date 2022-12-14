@@ -11,7 +11,7 @@ class Director:
     self.listaMateriasCod = []
 
   def registrarMatricula(self, est):
-    tiempoEmpleado = np.random.rand(1) * 10
+    tiempoEmpleado = np.random.rand(1) * 5
     tiempoEmpleado = tiempoEmpleado.astype(np.uint8)
     if (est > 0):
       return True, tiempoEmpleado
@@ -19,7 +19,7 @@ class Director:
       return False, tiempoEmpleado
 
   def registrarMaterias(self, est):
-    tiempoEmpleado = np.random.rand(1) * 10
+    tiempoEmpleado = np.random.rand(1) * 5
     tiempoEmpleado = tiempoEmpleado.astype(np.uint8)
     if (est[0] > 0):
       tupla = (est[0], est[1])

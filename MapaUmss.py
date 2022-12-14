@@ -2,24 +2,19 @@ import numpy as np
 
 
 class MapaUmss:
-    colum = 9
-    fila = 9
+  def __init__(self):
+    self.matriz = np.zeros((10, 10))
 
-    def __init__(self):
-        self.colm = 9
-        self.fila = 9
-        self.matriz = np.zeros((10, 10))
-    
-    def setPosEstudiante(self, fila, colum):
-        self.matriz[colum][fila] = 1
+  def setPosEstudiante(self, fila, colum):
+    self.matriz[colum][fila] = 1
 
-    def setPosOficinasMatriculas(self, fila, colum):
-        self.matriz[colum][fila] = 2
-        return "oficina ingresada"
+  def setPosOficinasMatriculas(self, fila, colum):
+    self.matriz[colum][fila] = 2
+    return "oficina ingresada"
 
-    def setPosCajero(self, fila, colum):
-        self.matriz[colum][fila] = 3
-        return "aqui esta"
+  def setPosOficinaDirector(self, fila, colum):
+    self.matriz[colum][fila] = 3
+    return "aqui esta"
 
-    def setPosResponsable(self, fila, colum):
-        self.matriz[colum][fila] = 4
+  def setPosOficinaResponsable(self, fila, colum):
+    self.matriz[colum][fila] = 4

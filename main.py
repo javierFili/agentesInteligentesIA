@@ -30,7 +30,7 @@ class BuzzleApp(kivy.app.App):
             self.rect = kivy.graphics.Rectangle(size=self.all_widgets[x, y].size,
                                                 pos=self.all_widgets[x, y].pos)
         if (self.mapa.matriz[x][y] == 2):
-          self.all_widgets[x, y].text = "[color=FFFFF]Oficina[/color]"
+          self.all_widgets[x, y].text = "[color=FFFFF]Cajero[/color]"
           self.all_widgets[x, y].background_normal = 'imagenes/matriculas.jpg'
           self.all_widgets[x, y].background_down = 'imagenes/matriculas.jgp'
           with self.all_widgets[x, y].canvas.before:
@@ -38,7 +38,7 @@ class BuzzleApp(kivy.app.App):
             self.rect = kivy.graphics.Rectangle(size=self.all_widgets[x, y].size,
                                                 pos=self.all_widgets[x, y].pos)
         if (self.mapa.matriz[x][y] == 3):
-          self.all_widgets[x, y].text = "[color=FFFFF]Cajero[/color]"
+          self.all_widgets[x, y].text = "[color=FFFFF]Director[/color]"
           self.all_widgets[x, y].background_normal = 'imagenes/director.png'
           self.all_widgets[x, y].background_down = 'imagenes/director.png'
           with self.all_widgets[x, y].canvas.before:
@@ -55,15 +55,15 @@ class BuzzleApp(kivy.app.App):
                                                 pos=self.all_widgets[x, y].pos)
 
   def build(self):
-    # para estudiante, caja, director,responsable, en orden estara.
+    # para estudiante, cajero, director,responsable, en orden estara.
     vectorD = np.random.rand(4) * 10
     vectorD = vectorD.astype(np.uint8)
 
     self.mapa = MapaUmss()
     self.mapa.setPosEstudiante(1, vectorD[0])
-    self.mapa.setPosOficinasMatriculas(2, vectorD[1])
-    self.mapa.setPosCajero(3, vectorD[2])
-    self.mapa.setPosResponsable(4, vectorD[3])
+    self.mapa.setPosOficinasMatriculas(4, vectorD[1])
+    self.mapa.setPosOficinaDirector(6, vectorD[2])
+    self.mapa.setPosOficinaResponsable(9, vectorD[3])
     self.est = Estudiante("", 0)
     self.dir = Director()
     self.caj = Cajero()
@@ -71,7 +71,7 @@ class BuzzleApp(kivy.app.App):
 
     boxLayout = kivy.uix.boxlayout.BoxLayout(orientation="vertical")
 
-    gridLayout = kivy.uix.gridlayout.GridLayout(rows=10, size_hint_y=9)
+    gridLayout = kivy.uix.gridlayout.GridLayout(rows=10, size_hint_y=10)
     boxLayout_buttons = kivy.uix.boxlayout.BoxLayout(orientation="horizontal")
 
     boxLayout.add_widget(gridLayout)
@@ -81,7 +81,7 @@ class BuzzleApp(kivy.app.App):
 
     for row_idx in range(self.all_widgets.shape[0]):
       for col_idx in range(self.all_widgets.shape[1]):
-        self.all_widgets[row_idx, col_idx] = kivy.uix.button.Button(text=str("V") + ", " + str("V"),
+        self.all_widgets[row_idx, col_idx] = kivy.uix.button.Button(text=str("Vacio"),
                                                                     font_size=15)
         self.all_widgets[row_idx, col_idx].markup = True
         gridLayout.add_widget(self.all_widgets[row_idx, col_idx])
@@ -103,12 +103,11 @@ class BuzzleApp(kivy.app.App):
   # la estudiante=1, caja=2, director=3, responsable=4
   def correrMatriz(self, *args):
     estudiantes = self.crearEstudiantesDatosAleatorios()
-    # tomar en cuenta esa cola..
-    # Poner el cierre de oficina en un tiempo X
-    # Aun no se esta poniendo el criterio de min max de materias.
     for estudiante in estudiantes:
       self.est = estudiante
       self.est.setTiempoEmpleado(self.caj.tiempoTotal)
+      ubicacionOfCajero = self.buscarOficina(2)
+      print("Estudiante se dirige a la oficina de Cajero, ubicada en :", ubicacionOfCajero[0], ubicacionOfCajero[1])
       cobrarMatricula = self.caj.cobrarMatricula(self.est.codEstudiante)
       comprarMatricula = self.est.pagarMatricula(self.caj)
       self.caj.setTiempoTotal(cobrarMatricula[1])
@@ -127,20 +126,23 @@ class BuzzleApp(kivy.app.App):
               "\nEstudiante muestra la matricula, al director, el director la registra, da el visto bueno")
 
         registro = self.dir.registrarMatricula(self.est.mostrarMatricula())
+        self.est.setTiempoEmpleado(registro[1])  # se agrega mas tiempo al estudiante
         if (registro and self.est.estado):
           print("Estudiante entrega la lista de materias que desea inscribirse",
                 "\nDirector registra estas materias y las guarda en una lista")
 
-          self.dir.registrarMaterias(self.est.darListaMaterias())
+          registroMat = self.dir.registrarMaterias(self.est.darListaMaterias())
+          self.est.setTiempoEmpleado(registroMat[1])
 
-          print("--->Estudiante se va a casa", "\n Estudiante invirtio un tiempo de ", self.est.tiempoEmpleado,
+          print("--->", self.est.codEstudiante, "Estudiante se va a casa", "\n Estudiante invirtio un tiempo de ",
+                self.est.tiempoEmpleado,
                 "\n\n----###--")
 
           self.est.irCasa()
         else:
-          print("--->", self.est.codEstudiante, "  no tenia tiempo disponible")
+          print("--->", self.est.codEstudiante, "  no tenia tiempo disponible", "\n\n----###--")
       else:
-        print("--->", self.est.codEstudiante, " no le alzanzo el dinero o no tenia tiempo disponible")
+        print("--->", self.est.codEstudiante, " no le alzanzo el dinero o no tenia tiempo disponible", "\n\n----###--")
     print("Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ",
           "\nDirector tiene la siguiente lista de codigos y materias:", self.dir.listaMateriasCod)
     ubicacionOfResponsable = self.buscarOficina(4)
@@ -150,7 +152,7 @@ class BuzzleApp(kivy.app.App):
     self.dir.irCasa()
     print("Responsable evalua las materias y las habilita segun criterio impuesto")
     # se habilita materias con un minimo de 3 inscritos
-    self.res.habilitarMaterias(3)
+    self.res.habilitarMaterias(2)
     print("Las materias habilitadas son las siguientes:", self.res.materiasHabilitadas,
           "\nLos estudiantes habilitados segun su codigo  son los siguientes:", self.res.estudianteHabilitados)
 
