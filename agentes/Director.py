@@ -1,15 +1,29 @@
+import numpy as np
+
+
 class Director:
-    dinero = 10
-    tiempo = 12
+  def getEstado(self):
+    return self.estado
 
-    estado = 'inactivo'
+  def __init__(self):
+    self.estado = 'inactivo'
+    self.listaMateriasCod = []
 
-    def getEstado(self):
-        return  self.estado
+  def aunTieneDinero(self):
+    return self.dinero
 
-    def __init__(self):
-        self.dinero = 12
-        self.tiempo = 122
+  def registrarMatricula(self, est):
+    tiempoEmpleado = np.random.rand(1) * 10
+    tiempoEmpleado = tiempoEmpleado.astype(np.uint8)
+    if (est[0] > 0):
+      tupla = (est[0], est[2])
+      self.listaMateriasCod.append(tupla)
+      return True, tiempoEmpleado
+    else:
+      return False, tiempoEmpleado
 
-    def aunTieneDinero(self):
-        return self.dinero
+  def registrarMaterias(self, est):
+    return "regitrados"
+
+  def entregarListaCodigosMaterias(self, responsable):
+    return "entragado"

@@ -8,7 +8,7 @@ class MapaUmss:
     def __init__(self):
         self.colm = 9
         self.fila = 9
-        self.matriz = np.zeros((9, 9))
+        self.matriz = np.zeros((10, 10))
     
     def setPosEstudiante(self, fila, colum):
         self.matriz[colum][fila] = 1

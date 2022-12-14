@@ -4,7 +4,7 @@ import kivy.uix.boxlayout
 import kivy.uix.button
 import kivy.uix.textinput
 import kivy.uix.label
-import numpy
+import numpy as np
 from MapaUmss import MapaUmss
 from agentes.Cajero import Cajero
 from agentes.Director import Director
@@ -54,15 +54,20 @@ class BuzzleApp(kivy.app.App):
                                                 pos=self.all_widgets[x, y].pos)
 
   def build(self):
+    # para estudiante, caja, director,responsable, en orden estara.
+    vectorD = np.random.rand(4) * 10
+    vectorD = vectorD.astype(np.uint8)
+
     self.mapa = MapaUmss()
-    self.mapa.setPosEstudiante(0, 4)
-    self.mapa.setPosOficinasMatriculas(4, 0)
-    self.mapa.setPosCajero(8, 4)
-    self.mapa.setPosResponsable(4, 8)
+    self.mapa.setPosEstudiante(1, vectorD[0])
+    self.mapa.setPosOficinasMatriculas(2, vectorD[1])
+    self.mapa.setPosCajero(3, vectorD[2])
+    self.mapa.setPosResponsable(4, vectorD[3])
     self.est = Estudiante("Ing.Informatica")
     self.dir = Director()
     self.caj = Cajero()
     self.res = Responsable()
+    self.costoMatricula = 14
 
     boxLayout = kivy.uix.boxlayout.BoxLayout(orientation="vertical")
 
@@ -72,7 +77,7 @@ class BuzzleApp(kivy.app.App):
     boxLayout.add_widget(gridLayout)
     boxLayout.add_widget(boxLayout_buttons)
 
-    self.all_widgets = numpy.zeros(shape=(10, 10), dtype="O")
+    self.all_widgets = np.zeros(shape=(10, 10), dtype="O")
 
     for row_idx in range(self.all_widgets.shape[0]):
       for col_idx in range(self.all_widgets.shape[1]):
@@ -91,27 +96,35 @@ class BuzzleApp(kivy.app.App):
 
     return boxLayout
 
+  def buscarOficina(self, cod):
+    valor = np.where(self.mapa.matriz == cod)
+    x = valor[0]
+    y = valor[1]
+    print(self.mapa.matriz[x, y], x, y)
+    # es la posicion x y de la posicion de la oficina
+    return valor
+
+  # la estudiante=1, caja=2, director=3, responsable=4
   def correrMatriz(self, *args):
-    print('---- Iteracion inicial ----')
-    print(self.mapa.matriz)
-    print('\n', 'Estudiante:', self.est.getEstado(), '\n'
-          , 'Director:', self.dir.getEstado(), '\n'
-          , 'Cajero:', self.caj.getEstado(), '\n'
-          , 'Responsable:', self.res.getEstado())
+    cobrarMatricula = self.caj.cobrarMatricula(self.est.codEstudiante)
+    comprarMatricula = self.est.pagarMatricula(self.caj)
+    if (cobrarMatricula[0] and comprarMatricula):
+      print(self.est.codEstudiante, " compro matricula")
+      self.est.setTiempoEmpleado(cobrarMatricula[1])
+      self.caj.darMatricula(self.est)
+      print("Tiempo empleado de est:", self.est.tiempoEmpleado, "Y codMatricula:", self.est.codMatricula)
+      print("Estudiante debe avanzar ala siguiente oficina: Director ")
+      ubicacionOfDirector = self.buscarOficina(3)
+      print("La oficina del director esta en ", ubicacionOfDirector[0], ubicacionOfDirector[1])
+      print("Estudiante se dirige a esa oficina")
+      print("Estudiante muestra la matricula, al director, el director la registra, da el visto bueno")
+      registro = self.dir.registrarMatricula(self.est.mostrarMatricula())
+      print("Estudiante entrega la lista de materias que desea inscribirse")
+      print("Director registra estas materias y las guarda en una lista")
 
-    g = 1
+      print("Estudiante se va a casa")
 
-    while self.est.getMaterias() > 0:
-      if self.est.pagar_a(self.caj):
-        self.est.setEstado(2)
-        self.caj.setEstado(2)
-        print('---- Iteracion ', g, ' ----')
-        print(self.mapa.matriz)
-        print('\n', 'Estudiante:', self.est.getEstado(), '\n'
-              , 'Director:', self.dir.getEstado(), '\n'
-              , 'Cajero:', self.caj.getEstado(), '\n'
-              , 'Responsable:', self.res.getEstado())
-      self.est.resMaterias()
+      print("Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ")
 
 
 if __name__ == '__main__':

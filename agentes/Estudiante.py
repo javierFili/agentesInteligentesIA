@@ -1,10 +1,12 @@
 class Estudiante:
   def __init__(self, carrera):
-    self.dinero = 12
-    self.tiempo = 122
+    self.dinero = 20
+    self.tiempoEmpleado = 0
     self.materias = 6
     self.estado = 'inactivo'
     self.carrera = carrera
+    self.codEstudiante = 12
+    self.codMatricula = 0
 
   def getCarrera(self):
     return self.carrera
@@ -32,7 +34,7 @@ class Estudiante:
   def getDinero(self):
     return self.dinero
 
-  def pagar_a(self, cajero):
+  def pagarMatricula(self, cajero):
     res = False
     c = cajero
     if self.dinero >= c.getCosto():
@@ -42,3 +44,15 @@ class Estudiante:
 
   def aunTieneDinero(self):
     return self.dinero
+
+  def avanzarSigOf(self):
+    return "avanzo"
+
+  def mostrarMatricula(self):
+    return self.codEstudiante, self.carrera, self.materias
+
+  def setTiempoEmpleado(self, tiempo):
+    self.tiempoEmpleado = self.tiempoEmpleado + tiempo
+
+  def setCodigoMatricula(self, cod):
+    self.codMatricula = cod
