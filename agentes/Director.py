@@ -6,11 +6,9 @@ class Director:
     return self.estado
 
   def __init__(self):
-    self.estado = 'inactivo'
+    self.estado = True
+    self.tiempoTotal = 0
     self.listaMateriasCod = []
-
-  def aunTieneDinero(self):
-    return self.dinero
 
   def registrarMatricula(self, est):
     tiempoEmpleado = np.random.rand(1) * 10

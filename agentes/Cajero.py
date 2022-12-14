@@ -17,12 +17,13 @@ class Cajero:
     return self.costo
 
   def __init__(self):
-    self.estado = 'inactivo'
+    self.estado = True
     self.dineroRecaudado = 0
-    self.tiempo = 122
     self.cobro = False
     self.registro = []
     self.costo = 14
+    self.matriculaCod = 12
+    self.tiempoTotal = 0
 
   def cobrarMatricula(self, codEstudiante):
     tiempoEmpleado = np.random.rand(1) * 10
@@ -35,8 +36,11 @@ class Cajero:
 
     except:
       self.registro.append(codEstudiante)
-      print("Registro de est:", self.registro)
       return True, tiempoEmpleado
 
   def darMatricula(self, estudiante):
-    return estudiante.setCodigoMatricula(1231)
+    self.matriculaCod = self.matriculaCod + 1
+    return estudiante.setCodigoMatricula(self.matriculaCod)
+
+  def setTiempoTotal(self, tiempo):
+    self.tiempoTotal = self.tiempoTotal + tiempo

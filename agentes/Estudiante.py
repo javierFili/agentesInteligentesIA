@@ -2,25 +2,15 @@ class Estudiante:
   def __init__(self, carrera, cod):
     self.dinero = 20
     self.tiempoEmpleado = 0
+    self.tiempoAsignado = 0
     self.materias = []
-    self.estado = 'inactivo'
+    self.estado = True
     self.carrera = carrera
     self.codEstudiante = cod
     self.codMatricula = 0
 
   def getCarrera(self):
     return self.carrera
-
-  def getEstado(self):
-    return self.estado
-
-  def setEstado(self, num):
-    if num == 1:
-      self.estado = 'inactivo'
-    elif num == 2:
-      self.estado = 'Pagando matricula'
-    else:
-      return None
 
   def setDinero(self, dinero):
     self.dinero = dinero
@@ -37,7 +27,7 @@ class Estudiante:
     return res
 
   def irCasa(self):
-    self.estado = "inactivo "
+    self.estado = False
 
   def mostrarMatricula(self):
     return self.codMatricula
@@ -47,6 +37,12 @@ class Estudiante:
 
   def setTiempoEmpleado(self, tiempo):
     self.tiempoEmpleado = self.tiempoEmpleado + tiempo
+    self.tiempoAsignado = self.tiempoAsignado - tiempo
+    if (self.tiempoAsignado <= 0):
+      self.estado = False
+
+  def setTiempoAsignado(self, tiempo):
+    self.tiempoAsignado = tiempo
 
   def setCodigoMatricula(self, cod):
     self.codMatricula = cod
