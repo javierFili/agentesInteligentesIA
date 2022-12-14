@@ -1,11 +1,11 @@
 class Estudiante:
-  def __init__(self, carrera):
+  def __init__(self, carrera, cod):
     self.dinero = 20
     self.tiempoEmpleado = 0
-    self.materias = ["calculo", "algebra", "Ingles", "Programacion1"]
+    self.materias = []
     self.estado = 'inactivo'
     self.carrera = carrera
-    self.codEstudiante = 12
+    self.codEstudiante = cod
     self.codMatricula = 0
 
   def getCarrera(self):
@@ -38,6 +38,7 @@ class Estudiante:
 
   def irCasa(self):
     self.estado = "inactivo "
+
   def mostrarMatricula(self):
     return self.codMatricula
 
