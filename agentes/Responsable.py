@@ -9,6 +9,5 @@ class Responsable:
 
   def habilitarMaterias(self, minimo, maximo):
     for x in self.listasMaterias:
-      queEs = x
       self.materiasHabilitadas.append(x[0][1])
       self.estudianteHabilitados.append(x[0][0])
