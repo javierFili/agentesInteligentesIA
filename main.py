@@ -109,16 +109,17 @@ class BuzzleApp(kivy.app.App):
       self.est.setTiempoEmpleado(self.caj.tiempoTotal)
       ubicacionOfCajero = self.buscarOficina(2)
 
-# Interaccion estudiante - cajero
-      print("\n--- El estudiante",self.est.codEstudiante,"inicia transaccion con el cajero ---"
-      ,"\n- Estudiante se dirige a la oficina de Cajero, ubicada en :", ubicacionOfCajero[0], ubicacionOfCajero[1])
+      # Interaccion estudiante - cajero
+      print("\n--- El estudiante", self.est.codEstudiante, "inicia transaccion con el cajero ---"
+            , "\n- Estudiante se dirige a la oficina de Cajero, ubicada en :", ubicacionOfCajero[0],
+            ubicacionOfCajero[1])
       cobrarMatricula = self.caj.cobrarMatricula(self.est.codEstudiante)
       comprarMatricula = self.est.pagarMatricula(self.caj)
       self.caj.setTiempoTotal(cobrarMatricula[1])
-      
+
       if (cobrarMatricula[0] and comprarMatricula and self.est.estado):
-        
-        print("- El estudiante",self.est.codEstudiante,"compro matricula")
+
+        print("- El estudiante", self.est.codEstudiante, "compro matricula")
         self.est.setTiempoEmpleado(cobrarMatricula[1])
         self.caj.darMatricula(self.est)
 
@@ -126,8 +127,8 @@ class BuzzleApp(kivy.app.App):
               "\n- Estudiante debe avanzar ala siguiente oficina: Director ")
         ubicacionOfDirector = self.buscarOficina(3)
 
-# Interaccion estudiante - director
-        print("\n--- El estudiante",self.est.codEstudiante,"inicia transaccion con el Director ---",
+        # Interaccion estudiante - director
+        print("\n--- El estudiante", self.est.codEstudiante, "inicia transaccion con el Director ---",
               "\n- La oficina del director esta en ", ubicacionOfDirector[0], ubicacionOfDirector[1],
               "\n- Estudiante se dirige a esa oficina",
               "\n- Estudiante muestra la matricula al director",
@@ -142,20 +143,21 @@ class BuzzleApp(kivy.app.App):
           registroMat = self.dir.registrarMaterias(self.est.darListaMaterias())
           self.est.setTiempoEmpleado(registroMat[1])
 
-          print("\n--- El estudiante",self.est.codEstudiante,"se va a casa ---"
-                ,"\nEstudiante invirtio un tiempo de "
-                ,self.est.tiempoEmpleado
-                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
+          print("\n--- El estudiante", self.est.codEstudiante, "se va a casa ---"
+                , "\nEstudiante invirtio un tiempo de "
+                , self.est.tiempoEmpleado
+                , "\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
 
           self.est.irCasa()
         else:
           print("x--- El estudiante", self.est.codEstudiante, "no tiene tiempo disponible ---x"
-                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
+                , "\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
       else:
-        print("X El estudiante", self.est.codEstudiante, "no tiene el dinero suficiente o tampoco cuenta con tiempo disponible"
-                ,"\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
+        print("X El estudiante", self.est.codEstudiante,
+              "no tiene el dinero suficiente o tampoco cuenta con tiempo disponible"
+              , "\n\n{--- Se atiende al siguiente estudiante en la cola ---}")
 
-# Interaccion director - responsable
+    # Interaccion director - responsable
     print("\n--- El Director inicia transaccion con el Responsable ---",
           "\n- Director busca la oficina de Responsable, para entregarle la lista de codigos y materias ",
           "\n- Director tiene la siguiente lista de codigos y materias:")
@@ -167,12 +169,12 @@ class BuzzleApp(kivy.app.App):
     print("- Director entrega lista y se marcha")
     self.dir.irCasa()
 
-# Actividad solo del responsable
+    # Actividad solo del responsable
     print("\n--- El Responsable inicia el proceso de habilitacion ---",
           "\n- Responsable evalua las materias y las habilita segun criterio impuesto")
-          # se habilita materias con un minimo de 3 inscritos
+    # se habilita materias con un minimo de 3 inscritos
     self.res.habilitarMaterias(2)
-    print("- Las materias habilitadas son las siguientes:","\n",self.res.materiasHabilitadas,
+    print("- Las materias habilitadas son las siguientes:", "\n", self.res.materiasHabilitadas,
           "\n- Los estudiantes habilitados segun su codigo son los siguientes:", self.res.estudianteHabilitados)
 
   def crearEstudiantesDatosAleatorios(self):
@@ -182,10 +184,10 @@ class BuzzleApp(kivy.app.App):
     while (n > 0):
       n = n - 1
       est = Estudiante("Ing.Sistemas", n)
-      dineroAsignado = np.random.rand(1) * 30
+      dineroAsignado = np.random.rand(1) * 30  # modificable para el dinero que tendra el estudiante
       dineroAsignado = dineroAsignado.astype(np.uint8)
       est.setDinero(dineroAsignado)
-      tiempoAsignado = np.random.rand(1) * 100
+      tiempoAsignado = np.random.rand(1) * 50  # modificable para el tiempo que se le dio a estudiante
       tiempoAsignado = tiempoAsignado.astype(np.uint8)
       est.setTiempoAsignado(tiempoAsignado)
       m = 5
