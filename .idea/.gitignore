@@ -1,3 +1,5 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+.dea
+../__pycache__
